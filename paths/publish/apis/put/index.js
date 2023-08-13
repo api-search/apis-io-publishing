@@ -28,7 +28,10 @@ exports.handler = vandium.generic()
         var apis_name = results[0].name;
         var apis_base_url = results[0].baseURL;
 
-        var apis_slug = apis_name.replace(/ /g, '+').toLowerCase();;     
+        var apis_slug = apis_slug;
+        apis_slug = apis_slug.replace(/,/g, '');
+        apis_slug = apis_slug.replace(/ /g, '-');
+        apis_slug = apis_slug.toLowerCase();    
 
 
         var apisjson_url = results[0].apisjson_url;
