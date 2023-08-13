@@ -169,7 +169,7 @@ exports.handler = vandium.generic()
                           //response.sql = sql;
                           //response.body = body;
                           response.message = "Published  " + apis_name + " to GitHub";
-                          callback( null, github_results);
+                          callback( null, response);
                           connection.end();
                         });                         
 
@@ -179,7 +179,7 @@ exports.handler = vandium.generic()
 
                         var response = {};
                         response['pulling'] = "Error writing to GitHub.";            
-                        callback( null, github_results );  
+                        callback( null, response );  
                         connection.end();
 
                       });
