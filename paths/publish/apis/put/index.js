@@ -15,9 +15,13 @@ exports.handler = vandium.generic()
 
     let currentDate = new Date();
     let startDate = new Date(currentDate.getFullYear(), 0, 1);
-    let days = Math.floor((currentDate - startDate) / (24 * 60 * 60 * 1000));
-     
+    let days = Math.floor((currentDate - startDate) / (24 * 60 * 60 * 1000));     
     const weekNumber = Math.ceil(days / 7);     
+
+    var year = currentDate.getFullYear().toString();
+    var month = (currentDate.getMonth() + 101).toString().substring(1);
+    var day = (currentDate.getDate() + 100).toString().substring(1);
+    var timestamp =  year + "-" + month + "-" + day;
     
     var sql = 'select a.name,a.description,a.image,a.baseURL,a.humanURL,a.apisjson_url,a.tags,a.published,(select score from apisjson aj WHERE aj.url = a.apisjson_url) as score from apis a WHERE a.published <> ' + weekNumber;
     connection.query(sql, function (error, results, fields) {
@@ -82,7 +86,7 @@ exports.handler = vandium.generic()
             const options = {
                 hostname: 'api.github.com',
                 method: 'GET',
-                path: '/repos/api-search/web-site/contents/_posts/0000-00-00-' + apis_slug + '.yaml',
+                path: '/repos/api-search/web-site/contents/_posts/' + timestamp + '-' + apis_slug + '.yaml',
                 headers: {
                   "Accept": "application/vnd.github+json",
                   "User-Agent": "apis-io-search",
