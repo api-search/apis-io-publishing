@@ -34,6 +34,7 @@ exports.handler = vandium.generic()
         var apis_base_url = results[0].baseURL;
         var apis_score = results[0].score;
         var apis_percentage = results[0].percentage;
+        var apis_rules = results[0].rules;
 
         var apis_slug = apis_name;
         apis_slug = apis_slug.replace(/,/g, '');
@@ -81,6 +82,7 @@ exports.handler = vandium.generic()
             publish_api.layout = "post";
             publish_api.score = apis_score;
             publish_api.percentage = apis_percentage;
+            publish_api.rules = apis_rules;
 
             //console.log("PUBLISH API");
             //console.log(publish_api);
