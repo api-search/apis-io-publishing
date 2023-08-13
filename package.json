@@ -6,8 +6,8 @@
   "types": "dist/core.d.ts",
   "dependencies": {
     "async": "*",
-    "https": "*",
     "aws-sdk": "^2.1430.0",
+    "https": "*",
     "js-yaml": "^4.1.0",
     "mysql": "*",
     "pool": "*",

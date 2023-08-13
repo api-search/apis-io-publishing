@@ -1,6 +1,7 @@
 const vandium = require('vandium');
 const mysql  = require('mysql');
 const https  = require('https');
+const yaml = require('js-yaml');
 
 exports.handler = vandium.generic()
   .handler( (event, context, callback) => {
@@ -24,7 +25,11 @@ exports.handler = vandium.generic()
       if(results && results.length > 0){
         
         // Pull any new ones.
-        var apisjson_name = results[0].name;
+        var apis_name = results[0].name;
+
+        var apis_slug = apis_name.replace(/ /g, '+').toLowerCase();;     
+
+
         var apisjson_url = results[0].apisjson_url;
         var apisjson_slug = apisjson_url.replace('http://','http-');
         apisjson_slug = apisjson_slug.replace('.json','');
@@ -61,7 +66,45 @@ exports.handler = vandium.generic()
               }
 
             }
-            callback( null, publish_api );
+
+            // Check from github
+            const options = {
+                hostname: 'api.github.com',
+                method: 'GET',
+                path: '/repos/api-search/publishing-api/contents/_posts/' + apis_slug + '.yaml',
+                headers: {
+                  "Accept": "application/vnd.github+json",
+                  "Authorization": 'Bearer ' + process.env.gtoken
+              }
+            };
+
+            console.log(options);
+
+            var req = https.request(options, (res) => {
+
+                let body = '';
+                res.on('data', (chunk) => {
+                    body += chunk;
+                });
+    
+                res.on('end', () => {
+
+                    callback( null, body );
+
+                });
+
+                res.on('error', () => {
+
+                  var response = {};
+                  response['pulling'] = "Error";            
+                  callback( null, response );  
+                  connection.end();
+                });
+
+            });
+
+            req.write();
+            req.end();             
 
 
           });
