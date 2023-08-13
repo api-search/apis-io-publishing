@@ -80,7 +80,7 @@ exports.handler = vandium.generic()
 
             console.log(options);
 
-            https.request(options, (res) => {
+            https.get(options, (res) => {
 
                 let body = '';
                 res.on('data', (chunk) => {
