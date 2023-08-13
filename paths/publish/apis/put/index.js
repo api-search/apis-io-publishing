@@ -95,6 +95,8 @@ exports.handler = vandium.generic()
                 res.on('end', () => {
 
                   var results = JSON.parse(Buffer.concat(data).toString());
+                  console.log("RESULTS");
+                  console.log(results);
 
                   var sha = '';
                   if(results.sha){
