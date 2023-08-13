@@ -19,7 +19,7 @@ exports.handler = vandium.generic()
      
     const weekNumber = Math.ceil(days / 7);     
     
-    var sql = 'SELECT * FROM apis WHERE published <> ' + weekNumber;
+    var sql = 'select a.name,a.description,a.image,a.baseURL,a.humanURL,a.apisjson_url,a.tags,a.published,(select score from apisjson aj WHERE aj.url = a.apisjson_url) as score from apis a WHERE a.published <> ' + weekNumber;
     connection.query(sql, function (error, results, fields) {
 
       if(results && results.length > 0){
@@ -27,12 +27,12 @@ exports.handler = vandium.generic()
         // Pull any new ones.
         var apis_name = results[0].name;
         var apis_base_url = results[0].baseURL;
+        var apis_score = results[0].score;
 
         var apis_slug = apis_slug;
         apis_slug = apis_slug.replace(/,/g, '');
         apis_slug = apis_slug.replace(/ /g, '-');
         apis_slug = apis_slug.toLowerCase();    
-
 
         var apisjson_url = results[0].apisjson_url;
         var apisjson_slug = apisjson_url.replace('http://','http-');
@@ -73,7 +73,7 @@ exports.handler = vandium.generic()
 
             publish_api.published = true;
             publish_api.layout = "post";
-
+            publish_api.score = apis_score;
 
             //console.log("PUBLISH API");
             //console.log(publish_api);
