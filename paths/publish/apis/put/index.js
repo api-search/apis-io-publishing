@@ -115,7 +115,7 @@ exports.handler = vandium.generic()
                   m.committer = c;
                   m.sha = sha;
                   //m.content = btoa(api_yaml);
-                  m.content = api_yaml;
+                  m.content = btoa(unescape(encodeURIComponent(api_yaml)));
 
                   // Check from github
                   const options = {
