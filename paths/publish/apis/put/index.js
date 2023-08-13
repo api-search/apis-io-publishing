@@ -146,10 +146,10 @@ exports.handler = vandium.generic()
 
                   });
 
-                });
-
                 req.write(m);
-                req.end();                 
+                req.end();   
+
+                });              
 
                 res.on('error', () => {
 
