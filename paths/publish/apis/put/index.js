@@ -90,9 +90,66 @@ exports.handler = vandium.generic()
     
                 res.on('end', () => {
 
-                    callback( null, body );
+                  var results = JSON.parse(Buffer.concat(data).toString());
+                  var sha = '';
+                  if(results.sha){
+                    sha = results.sha;
+                  }
+
+                  var api = publish_api;
+                  var api_yaml = jsyaml.dump(api);
+
+                  var c = {};
+                  c.name = "Kin Lane";
+                  c.email = "kinlane@gmail.com";
+
+                  var m = {};
+                  m.message = 'Publishing OpenAPI';
+                  m.committer = c;
+                  m.sha = sha;
+                  m.content = btoa(encodeURIComponent(api_yaml));
+
+                  // Check from github
+                  const options = {
+                      hostname: 'api.github.com',
+                      method: 'PUT',
+                      path: '/repos/api-search/publishing-api/contents/_posts/' + apis_slug + '.yaml',
+                      headers: {
+                        "Accept": "application/vnd.github+json",
+                        "User-Agent": "apis-io-search",
+                        "Authorization": 'Bearer ' + process.env.gtoken
+                    }
+                  };
+
+                  console.log(options);
+
+                  var req = https.request(options, (res) => {
+
+                      let body = '';
+                      res.on('data', (chunk) => {
+                          body += chunk;
+                      });
+          
+                      res.on('end', () => {
+
+                          callback( null, body );
+
+                      });
+
+                      res.on('error', () => {
+
+                        var response = {};
+                        response['pulling'] = "Error";            
+                        callback( null, response );  
+                        connection.end();
+                      });
+
+                  });
 
                 });
+
+                req.write(m);
+                req.end();                 
 
                 res.on('error', () => {
 
