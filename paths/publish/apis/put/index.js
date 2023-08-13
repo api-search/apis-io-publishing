@@ -103,10 +103,12 @@ exports.handler = vandium.generic()
 
                 var body = '';
                 res.on('data', (chunk) => {
-                  body.push(chunk);
+                    body += chunk;
                 });
     
                 res.on('end', () => {
+
+                  //console.log(res);
 
                   var body = Buffer.concat(body).toString();
                   var github_results = JSON.parse(body);
