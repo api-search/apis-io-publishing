@@ -110,9 +110,10 @@ exports.handler = vandium.generic()
                   console.log("RESULTS");
                   console.log(data);
                   console.log("RESULTS");
-                  var github_results = JSON.parse(Buffer.concat(data).toString());
+                  var github_results = JSON.parse(atob(escape(decodeURIComponent(Buffer.concat(data).toString()))));
                   //console.log("RESULTS");
-                  //console.log(github_results);
+                  console.log(github_results);
+                  console.log("RESULTS");
 
                   var sha = '';
                   if(results.sha){
