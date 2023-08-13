@@ -111,7 +111,7 @@ exports.handler = vandium.generic()
                   m.message = 'Publishing OpenAPI';
                   m.committer = c;
                   m.sha = sha;
-                  m.content = btoa(encodeURIComponent(api_yaml));
+                  m.content = btoa(api_yaml);
 
                   // Check from github
                   const options = {
