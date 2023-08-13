@@ -96,7 +96,7 @@ exports.handler = vandium.generic()
               }
             };
 
-            //console.log(options);
+            console.log(options);
 
             https.get(options, (res) => {
 
@@ -107,15 +107,9 @@ exports.handler = vandium.generic()
     
                 res.on('end', () => {
 
-                  console.log("RESULTS");
-                  console.log(data);
-                  console.log("RESULTS");
-                  var data = Buffer.concat(data).toString();
-                  var data = atob(escape(decodeURIComponent(data)));
-                  var github_results = JSON.parse(data);
-                  //console.log("RESULTS");
+                  var body = atob(escape(decodeURIComponent(body)));
+                  var github_results = JSON.parse(body);
                   console.log(github_results);
-                  console.log("RESULTS");
 
                   var sha = '';
                   if(results.sha){
