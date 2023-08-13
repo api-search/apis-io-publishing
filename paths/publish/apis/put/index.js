@@ -29,7 +29,7 @@ exports.handler = vandium.generic()
         var apis_base_url = results[0].baseURL;
         var apis_score = results[0].score;
 
-        var apis_slug = apis_slug;
+        var apis_slug = apis_name;
         apis_slug = apis_slug.replace(/,/g, '');
         apis_slug = apis_slug.replace(/ /g, '-');
         apis_slug = apis_slug.toLowerCase();    
