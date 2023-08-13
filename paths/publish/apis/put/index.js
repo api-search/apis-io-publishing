@@ -108,7 +108,7 @@ exports.handler = vandium.generic()
                 res.on('end', () => {
 
                   console.log(data);
-                  var body = atob(decodeURIComponent(data));
+                  var body = atob(data);
                   var github_results = JSON.parse(body);
                   console.log(github_results);
 
