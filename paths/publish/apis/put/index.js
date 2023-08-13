@@ -80,7 +80,7 @@ exports.handler = vandium.generic()
 
             console.log(options);
 
-            var req = https.request(options, (res) => {
+            https.request(options, (res) => {
 
                 let body = '';
                 res.on('data', (chunk) => {
@@ -102,10 +102,6 @@ exports.handler = vandium.generic()
                 });
 
             });
-
-            req.write();
-            req.end();             
-
 
           });
         }).on('error', err => {
