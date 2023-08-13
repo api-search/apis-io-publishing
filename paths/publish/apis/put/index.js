@@ -52,9 +52,16 @@ exports.handler = vandium.generic()
         
           res.on('end', () => {
 
-            var apisjson = JSON.stringify(Buffer.concat(data).toString());
+            var apisjson = JSON.parse(Buffer.concat(data).toString());
+            var publish_api = {};
+            for (let i = 0; i < apisjson.apis.length; i++) {
 
-            callback( null, apisjson );
+              if(apisjson.apis[i].name == apisjson_name){
+                publish_api = apisjson.apis[i];
+              }
+
+            }
+            callback( null, publish_api );
 
 
           });
