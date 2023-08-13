@@ -61,7 +61,7 @@ exports.handler = vandium.generic()
             var publish_api = {};
             for (let i = 0; i < apisjson.apis.length; i++) {
 
-              if(apisjson.apis[i].name == apisjson_name){
+              if(apisjson.apis[i].name == apis_name){
                 publish_api = apisjson.apis[i];
               }
 
