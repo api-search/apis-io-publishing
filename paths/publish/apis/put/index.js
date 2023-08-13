@@ -67,6 +67,9 @@ exports.handler = vandium.generic()
 
             }
 
+            console.log("PUBLISH API");
+            console.log(publish_api);
+
             // Check from github
             const options = {
                 hostname: 'api.github.com',
@@ -91,13 +94,12 @@ exports.handler = vandium.generic()
                 res.on('end', () => {
 
                   var results = JSON.parse(Buffer.concat(data).toString());
+
                   var sha = '';
                   if(results.sha){
                     sha = results.sha;
                   }
-
-                  var api = publish_api;
-                  var api_yaml = yaml.dump(api);
+                  var api_yaml = yaml.dump(publish_api);
 
                   var c = {};
                   c.name = "Kin Lane";
@@ -149,6 +151,9 @@ exports.handler = vandium.generic()
                       });
 
                   });
+
+                  console.log("PUBLISH API-2");
+                  console.log(m);
 
                 req.write(JSON.stringify(m));
                 req.end();   
