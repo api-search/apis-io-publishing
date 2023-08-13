@@ -22,8 +22,9 @@ exports.handler = vandium.generic()
     var month = (currentDate.getMonth() + 101).toString().substring(1);
     var day = (currentDate.getDate() + 100).toString().substring(1);
     var timestamp =  year + "-" + month + "-" + day;
+    console.log(timestamp);
     
-    var sql = 'select a.name,a.description,a.image,a.baseURL,a.humanURL,a.apisjson_url,a.tags,a.published,(select score from apisjson aj WHERE aj.url = a.apisjson_url) as score from apis a WHERE a.published <> ' + weekNumber;
+    var sql = 'select a.name,a.description,a.image,a.baseURL,a.humanURL,a.apisjson_url,a.tags,a.published,(select score from apisjson aj WHERE aj.url = a.apisjson_url) as score,(select percentage from apisjson aj WHERE aj.url = a.apisjson_url) as percentage from apis a WHERE a.published <> ' + weekNumber;
     connection.query(sql, function (error, results, fields) {
 
       if(results && results.length > 0){
@@ -32,6 +33,7 @@ exports.handler = vandium.generic()
         var apis_name = results[0].name;
         var apis_base_url = results[0].baseURL;
         var apis_score = results[0].score;
+        var apis_percentage = results[0].percentage;
 
         var apis_slug = apis_name;
         apis_slug = apis_slug.replace(/,/g, '');
