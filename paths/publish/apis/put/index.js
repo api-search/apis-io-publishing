@@ -82,7 +82,7 @@ exports.handler = vandium.generic()
               }
             };
 
-            console.log(options);
+            //console.log(options);
 
             https.get(options, (res) => {
 
@@ -100,6 +100,8 @@ exports.handler = vandium.generic()
                     sha = results.sha;
                   }
                   var api_yaml = yaml.dump(publish_api);
+
+                  console.log(api_yaml);
 
                   var c = {};
                   c.name = "Kin Lane";
@@ -123,7 +125,7 @@ exports.handler = vandium.generic()
                     }
                   };
 
-                  console.log(options);
+                  //console.log(options);
 
                   var req = https.request(options, (res) => {
 
