@@ -101,14 +101,14 @@ exports.handler = vandium.generic()
 
             https.get(options, (res) => {
 
-                let body = '';
+                var body = '';
                 res.on('data', (chunk) => {
-                    body += chunk;
+                  body.push(chunk);
                 });
     
                 res.on('end', () => {
 
-                  console.log(res);
+                  console.log(res);d
 
                   var body = Buffer.concat(body).toString();
                   var github_results = JSON.parse(body);
