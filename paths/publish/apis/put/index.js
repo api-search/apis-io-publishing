@@ -110,7 +110,7 @@ exports.handler = vandium.generic()
 
                   console.log(res);
 
-                  var body = Buffer.concat(data).toString();
+                  var body = Buffer.concat(body).toString();
                   var github_results = JSON.parse(body);
                   //console.log(github_results);
 
