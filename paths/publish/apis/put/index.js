@@ -97,7 +97,7 @@ exports.handler = vandium.generic()
                   }
 
                   var api = publish_api;
-                  var api_yaml = jsyaml.dump(api);
+                  var api_yaml = yaml.dump(api);
 
                   var c = {};
                   c.name = "Kin Lane";
