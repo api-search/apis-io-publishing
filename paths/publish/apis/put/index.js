@@ -112,11 +112,11 @@ exports.handler = vandium.generic()
 
                   var body = Buffer.concat(body).toString();
                   var github_results = JSON.parse(body);
-                  //console.log(github_results);
+                  console.log(github_results);
 
                   var sha = '';
-                  if(results.sha){
-                    sha = results.sha;
+                  if(github_results.sha){
+                    sha = github_results.sha;
                   }
                   var api_yaml = yaml.dump(publish_api);
                   api_yaml = '---\r\n' + api_yaml + '---\r\n';
