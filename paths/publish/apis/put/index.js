@@ -24,7 +24,7 @@ exports.handler = vandium.generic()
     var timestamp =  year + "-" + month + "-" + day;
     console.log(timestamp);
     
-    var sql = 'select a.name,a.description,a.image,a.baseURL,a.humanURL,a.apisjson_url,a.tags,a.published,(select score from apisjson aj WHERE aj.url = a.apisjson_url) as score,(select percentage from apisjson aj WHERE aj.url = a.apisjson_url) as percentage from apis a WHERE a.published <> ' + weekNumber;
+    var sql = 'select a.name,a.description,a.image,a.baseURL,a.humanURL,a.apisjson_url,a.rules,a.tags,a.published,(select score from apisjson aj WHERE aj.url = a.apisjson_url) as score,(select percentage from apisjson aj WHERE aj.url = a.apisjson_url) as percentage from apis a WHERE a.published <> ' + weekNumber;
     connection.query(sql, function (error, results, fields) {
 
       if(results && results.length > 0){
