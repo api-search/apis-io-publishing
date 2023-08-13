@@ -110,7 +110,7 @@ exports.handler = vandium.generic()
                     sha = results.sha;
                   }
                   var api_yaml = yaml.dump(publish_api);
-                  api_yaml = '---\r\n' + api_yaml + '\r\n---\r\n';
+                  api_yaml = '---\r\n' + api_yaml + '---\r\n';
 
                   //console.log(api_yaml);
 
