@@ -68,6 +68,10 @@ exports.handler = vandium.generic()
 
             }
 
+            publish_api.published = true;
+            publish_api.layout = "post";
+
+
             //console.log("PUBLISH API");
             //console.log(publish_api);
 
@@ -103,6 +107,7 @@ exports.handler = vandium.generic()
                     sha = results.sha;
                   }
                   var api_yaml = yaml.dump(publish_api);
+                  api_yaml = '---\r\n' + api_yaml + '\r\n---\r\n';
 
                   //console.log(api_yaml);
 
