@@ -140,7 +140,8 @@ exports.handler = vandium.generic()
           
                       res.on('end', () => {
 
-                        var sql = "UPDATE apis SET published = " + weekNumber + " WHERE baseURL = '" + apis_base_url + "'";
+                        //var sql = "UPDATE apis SET published = " + weekNumber + " WHERE baseURL = '" + apis_base_url + "'";
+                        var sql = "UPDATE apis SET published = 0d WHERE baseURL = '" + apis_base_url + "'";
                         connection.query(sql, function (error, results, fields) { 
                           var response = {};
                           response.message = "Published  " + apis_name + " to GitHub";
