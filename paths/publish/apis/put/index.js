@@ -42,7 +42,7 @@ exports.handler = vandium.generic()
         var save_apisjson_path = 'apis-io/api/apis-json/' + apisjson_slug + "/" + weekNumber + "/apis.json";
         var local_apis_json = "https://kinlane-productions2.s3.amazonaws.com/" + save_apisjson_path;
         
-        console.log(local_apis_json);
+        //console.log(local_apis_json);
 
         https.get(local_apis_json, res => {
           
@@ -104,7 +104,7 @@ exports.handler = vandium.generic()
                   }
                   var api_yaml = yaml.dump(publish_api);
 
-                  console.log(api_yaml);
+                  //console.log(api_yaml);
 
                   var c = {};
                   c.name = "Kin Lane";
