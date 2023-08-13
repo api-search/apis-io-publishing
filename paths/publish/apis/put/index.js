@@ -146,7 +146,7 @@ exports.handler = vandium.generic()
 
                   });
 
-                req.write(m);
+                req.write(JSON.stringify(m));
                 req.end();   
 
                 });              
