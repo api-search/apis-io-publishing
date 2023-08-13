@@ -213,7 +213,7 @@ exports.handler = vandium.generic()
         
         // Pull one that is old
         var response = {};
-        response['pulling'] = "No more to rate.";            
+        response['pulling'] = "No more to publish.";            
         callback( null, response );  
         connection.end();        
           
