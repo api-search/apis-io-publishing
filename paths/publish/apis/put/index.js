@@ -71,7 +71,7 @@ exports.handler = vandium.generic()
             const options = {
                 hostname: 'api.github.com',
                 method: 'GET',
-                path: '/repos/api-search/publishing-api/contents/_posts/' + apis_slug + '.yaml',
+                path: '/repos/api-search/web-site/contents/_posts/' + apis_slug + '.yaml',
                 headers: {
                   "Accept": "application/vnd.github+json",
                   "User-Agent": "apis-io-search",
@@ -113,7 +113,7 @@ exports.handler = vandium.generic()
                   const options = {
                       hostname: 'api.github.com',
                       method: 'PUT',
-                      path: '/repos/api-search/publishing-api/contents/_posts/' + apis_slug + '.yaml',
+                      path: '/repos/api-search/web-site/contents/_posts/' + apis_slug + '.yaml',
                       headers: {
                         "Accept": "application/vnd.github+json",
                         "User-Agent": "apis-io-search",
@@ -132,16 +132,20 @@ exports.handler = vandium.generic()
           
                       res.on('end', () => {
 
-                          callback( null, body );
+                        var response = {};
+                        response['pulling'] = "Published to GitHub.";            
+                        callback( null, response );  
+                        connection.end();
 
                       });
 
                       res.on('error', () => {
 
                         var response = {};
-                        response['pulling'] = "Error";            
+                        response['pulling'] = "Error writing to GitHub.";            
                         callback( null, response );  
                         connection.end();
+
                       });
 
                   });
@@ -154,7 +158,7 @@ exports.handler = vandium.generic()
                 res.on('error', () => {
 
                   var response = {};
-                  response['pulling'] = "Error";            
+                  response['pulling'] = "Error reading from GitHub.";            
                   callback( null, response );  
                   connection.end();
                 });
