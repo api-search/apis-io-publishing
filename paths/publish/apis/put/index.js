@@ -95,8 +95,8 @@ exports.handler = vandium.generic()
                 res.on('end', () => {
 
                   var github_results = JSON.parse(Buffer.concat(data).toString());
-                  console.log("RESULTS");
-                  console.log(github_results);
+                  //console.log("RESULTS");
+                  //console.log(github_results);
 
                   var sha = '';
                   if(results.sha){
@@ -140,12 +140,12 @@ exports.handler = vandium.generic()
           
                       res.on('end', () => {
 
-                        //var sql = "UPDATE apis SET published = " + weekNumber + " WHERE baseURL = '" + apis_base_url + "'";
-                        var sql = "UPDATE apis SET published = 0 WHERE baseURL = '" + apis_base_url + "'";
+                        var sql = "UPDATE apis SET published = " + weekNumber + " WHERE baseURL = '" + apis_base_url + "'";
+                        //var sql = "UPDATE apis SET published = 0 WHERE baseURL = '" + apis_base_url + "'";
                         connection.query(sql, function (error, results, fields) { 
                           var response = {};
-                          response.sql = sql;
-                          response.body = body;
+                          //response.sql = sql;
+                          //response.body = body;
                           response.message = "Published  " + apis_name + " to GitHub";
                           callback( null, response);
                           connection.end();
