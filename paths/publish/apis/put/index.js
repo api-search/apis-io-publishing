@@ -74,6 +74,7 @@ exports.handler = vandium.generic()
                 path: '/repos/api-search/publishing-api/contents/_posts/' + apis_slug + '.yaml',
                 headers: {
                   "Accept": "application/vnd.github+json",
+                  "User-Agent": "apis-io-search",
                   "Authorization": 'Bearer ' + process.env.gtoken
               }
             };
