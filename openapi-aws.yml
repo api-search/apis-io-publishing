@@ -1,0 +1,520 @@
+openapi: 3.0.1
+info:
+  title: APIs.io Publishing API
+  description: This is API that publishes APIs to the web site.
+  version: V1
+servers:
+- url: https://6lmdrlqfjj.execute-api.us-east-1.amazonaws.com/staging
+paths:
+
+  /publish/apis:
+    put:
+      operationId: publishAPIs
+      responses:
+        200:
+          description: 200 response
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublishAPIs'
+      x-amazon-apigateway-integration:
+        httpMethod: POST
+        uri: arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:007596076917:function:m-s-apis-io-publishapis-pu/invocations
+        responses:
+          default:
+            statusCode: "200"
+        passthroughBehavior: when_no_match
+        contentHandling: CONVERT_TO_TEXT
+        type: aws
+  /publish/maintainers:
+    put:
+      operationId: publishMaintainers
+      responses:
+        200:
+          description: 200 response
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublishMaintainers'
+      x-amazon-apigateway-integration:
+        httpMethod: POST
+        uri: arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:007596076917:function:m-s-apis-io-publishmaintainers-pu/invocations
+        responses:
+          default:
+            statusCode: "200"
+        passthroughBehavior: when_no_match
+        contentHandling: CONVERT_TO_TEXT
+        type: aws
+  /publish/tags:
+    put:
+      operationId: publishTags
+      responses:
+        200:
+          description: 200 response
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublishTags'
+      x-amazon-apigateway-integration:
+        httpMethod: POST
+        uri: arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:007596076917:function:m-s-apis-io-publishtags-pu/invocations
+        responses:
+          default:
+            statusCode: "200"
+        passthroughBehavior: when_no_match
+        contentHandling: CONVERT_TO_TEXT
+        type: aws
+
+components:
+  schemas:
+    LatestPropertiesRules:
+      required:
+      - description
+      - run
+      type: object
+      properties:
+        status:
+          type: string
+        description:
+          type: string
+        run:
+          type: string
+      description: Results of latest pull.
+    Given:
+      type: array
+      items:
+        $ref: '#/components/schemas/PathExpression'
+    APIsJSON:
+      required:
+      - description
+      - name
+      - url
+      type: object
+      properties:
+        name:
+          minLength: 5
+          type: string
+          description: The name of the service described
+        description:
+          minLength: 5
+          type: string
+          description: Description of the service
+        url:
+          pattern: ^(http)|(https)://(.*)$
+          type: string
+          description: URL where the apis.json file will live
+        image:
+          type: string
+          description: Image to represent the API
+        created:
+          type: string
+          description: Date when the file was created
+          format: date
+        modified:
+          type: string
+          description: Date when the file was modified
+          format: date
+        specificationVersion:
+          type: string
+          description: APIs.json spec version, latest is 0.14
+        apis:
+          type: array
+          description: All the APIs of this service
+          items:
+            $ref: '#/components/schemas/API'
+        maintainers:
+          type: array
+          description: Maintainers of the apis.json file
+          items:
+            $ref: '#/components/schemas/Maintainer'
+        tags:
+          type: array
+          description: Tags to describe the service
+          items:
+            $ref: '#/components/schemas/Tag'
+        include:
+          type: array
+          description: Links to other apis.json definitions included in this service.
+          items:
+            $ref: '#/components/schemas/Include'
+    Include:
+      required:
+      - name
+      - url
+      type: object
+      properties:
+        name:
+          minLength: 1
+          type: string
+        url:
+          pattern: ^(http)|(https)://(.*)$
+          type: string
+      description: Include other APIs.json file
+    UpdateTags:
+      required:
+      - description
+      - run
+      type: object
+      properties:
+        status:
+          type: string
+        description:
+          type: string
+        run:
+          type: string
+      description: Results of latest pull.
+    Maintainer:
+      required:
+      - name
+      type: object
+      properties:
+        name:
+          minLength: 5
+          type: string
+          description: name
+      additionalProperties:
+        type: string
+      description: The person or organization responsible for maintaining the API.
+    Format:
+      type: string
+    PathExpression:
+      type: string
+    LatestProperties:
+      required:
+      - description
+      - run
+      type: object
+      properties:
+        status:
+          type: string
+        description:
+          type: string
+        run:
+          type: string
+      description: Results of latest pull.
+    PublishAPIs:
+      required:
+      - description
+      - run
+      type: object
+      properties:
+        status:
+          type: string
+        description:
+          type: string
+        run:
+          type: string
+      description: Results of latest pull.
+    Search:
+      required:
+      - data
+      - links
+      - meta
+      type: object
+      properties:
+        meta:
+          required:
+          - limit
+          - page
+          - totalPages
+          type: object
+          properties:
+            search:
+              type: string
+            type:
+              type: string
+            limit:
+              type: integer
+              format: int32
+            page:
+              type: integer
+              format: int32
+            totalPages:
+              type: integer
+              format: int32
+        data:
+          type: string
+          description: Listing of APIs in the JSON API format.
+        links:
+          required:
+          - self
+          type: object
+          properties:
+            self:
+              type: string
+            first:
+              type: string
+            prev:
+              type: string
+            next:
+              type: string
+            last:
+              type: string
+      description: An JSON API object with metadata, data, and links.
+    Latest:
+      required:
+      - description
+      - run
+      type: object
+      properties:
+        status:
+          type: string
+        description:
+          type: string
+        run:
+          type: string
+      description: Results of latest pull.
+    Then:
+      type: object
+    Property:
+      required:
+      - type
+      - url
+      type: object
+      properties:
+        type:
+          pattern: ^(Swagger)$|^(RAML)$|^(Blueprint)$|^(WADL)$|^(WSDL)$|^(TermsOfService)$|^(InterfaceLicense)$|^(StatusPage)$|^(Pricing)$|^(Forums)$|^(AlertsTwitterHandle)$|^(X-[A-Za-z0-9\-]*)$
+          type: string
+        url:
+          pattern: ^(http)|(https)://(.*)$
+          type: string
+      description: A representation of a URL
+    UpdateMaintainers:
+      required:
+      - description
+      - run
+      type: object
+      properties:
+        status:
+          type: string
+        description:
+          type: string
+        run:
+          type: string
+      description: Results of latest pull.
+    HumanReadableSeverity:
+      type: string
+      enum:
+      - error
+      - warn
+      - info
+      - hint
+      - "false"
+    PublishMaintainers:
+      required:
+      - description
+      - run
+      type: object
+      properties:
+        status:
+          type: string
+        description:
+          type: string
+        run:
+          type: string
+      description: Results of latest pull.
+    Severity:
+      type: object
+    Formats:
+      type: array
+      items:
+        $ref: '#/components/schemas/Format'
+    PublishTags:
+      required:
+      - description
+      - run
+      type: object
+      properties:
+        status:
+          type: string
+        description:
+          type: string
+        run:
+          type: string
+      description: Results of latest pull.
+    Contact:
+      required:
+      - FN
+      type: object
+      properties:
+        FN:
+          minLength: 1
+          type: string
+        email:
+          type: string
+          format: email
+        organizationName:
+          minLength: 1
+          type: string
+        adr:
+          type: string
+        tel:
+          minLength: 1
+          type: string
+        X-github:
+          type: string
+        photo:
+          pattern: ^(http)|(https)://(.*)$
+          type: string
+        vCard:
+          pattern: ^(http)|(https)://(.*)$
+          type: string
+        url:
+          pattern: ^(http)|(https)://(.*)$
+          type: string
+      description: Information on contacting the API support
+    UpdateProperties:
+      required:
+      - description
+      - run
+      type: object
+      properties:
+        status:
+          type: string
+        description:
+          type: string
+        run:
+          type: string
+      description: Results of latest pull.
+    DiagnosticSeverity:
+      type: number
+      enum:
+      - -1
+      - 0
+      - 1
+      - 2
+      - 3
+    API:
+      required:
+      - baseURL
+      - contact
+      - description
+      - humanURL
+      - image
+      - name
+      - properties
+      type: object
+      properties:
+        name:
+          minLength: 5
+          type: string
+          description: name
+        description:
+          minLength: 5
+          type: string
+          description: description of the API
+        image:
+          type: string
+          description: URL of an image representing the API
+        baseURL:
+          pattern: ^(http)|(https)://(.*)$
+          type: string
+          description: baseURL
+        humanURL:
+          pattern: ^(http)|(https)://(.*)$
+          type: string
+          description: humanURL
+        tags:
+          type: array
+          description: tags to describe the API
+          items:
+            minLength: 1
+            type: string
+        properties:
+          type: array
+          description: URLs
+          items:
+            $ref: '#/components/schemas/Property'
+        contact:
+          type: array
+          description: Contact to reach if questions about API
+          items:
+            $ref: '#/components/schemas/Contact'
+        meta:
+          type: array
+          items:
+            $ref: '#/components/schemas/metaInformation'
+      description: The description of the API
+    LatestRules:
+      required:
+      - description
+      - run
+      type: object
+      properties:
+        status:
+          type: string
+        description:
+          type: string
+        run:
+          type: string
+      description: Results of latest pull.
+    Rule:
+      required:
+      - given
+      - then
+      type: object
+      properties:
+        description:
+          type: string
+        documentationUrl:
+          type: string
+          format: url
+        recommended:
+          type: boolean
+        given:
+          $ref: '#/components/schemas/Given'
+        resolved:
+          type: boolean
+        severity:
+          $ref: '#/components/schemas/Severity'
+        message:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+        formats:
+          $ref: '#/components/schemas/Formats'
+        then:
+          type: array
+          items:
+            $ref: '#/components/schemas/Then'
+        type:
+          type: string
+          enum:
+          - style
+          - validation
+        extensions:
+          type: object
+          properties: {}
+    Tag:
+      type: object
+      description: A consistent set of tag to apply to a description
+    metaInformation:
+      required:
+      - key
+      - value
+      type: object
+      properties:
+        key:
+          type: string
+        value:
+          type: string
+      description: Metadata about the API
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: x-api-key
+      in: header

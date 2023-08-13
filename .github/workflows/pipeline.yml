@@ -1,6 +1,4 @@
-# This is a basic workflow to help you get started with Actions
-
-name: CI
+name: Build API  
 
 # Controls when the workflow will run
 on:
@@ -13,8 +11,9 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+
 jobs:
+
   # This workflow contains a single job called "build"
   build:
     # The type of runner that the job will run on
@@ -34,3 +33,63 @@ jobs:
         run: |
           echo Add other actions to build,
           echo test, and deploy your project.
+
+  deploy_source:
+
+    name: Deploy API Using AWS Lambda
+    strategy:
+      matrix:
+        node-version: [12.x]
+    runs-on: ubuntu-latest
+    steps:
+    
+      - uses: actions/checkout@v1
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: npm install and build
+        run: |
+          npm install
+          npm ci
+          npm run build --if-present
+        env:
+          CI: true
+
+      # Dynamic below here
+      - name: /publish/apis put lambda deploy zip
+        uses: api-search/publishing-api@main
+        with:
+          args: zip -qq -r m-s-apis-io-publishapis-pu.zip paths/publish/apis/put/index.js node_modules
+      - name: publishing-api get lambda deploy
+        uses: appleboy/lambda-action@master
+        with:
+          aws_access_key_id: ${{secrets.AWS_ACCESS_KEY_ID}}
+          aws_secret_access_key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+          aws_region: us-east-1
+          function_name: m-s-apis-io-publishapis-pu
+          zip_file: m-s-apis-io-publishapis-pu.zip
+      - name: /publish/maintainers put lambda deploy zip
+        uses: api-search/publishing-api@main
+        with:
+          args: zip -qq -r m-s-apis-io-publishmaintainers-pu.zip paths/publish/maintainers/put/index.js node_modules
+      - name: publishing-api get lambda deploy
+        uses: appleboy/lambda-action@master
+        with:
+          aws_access_key_id: ${{secrets.AWS_ACCESS_KEY_ID}}
+          aws_secret_access_key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+          aws_region: us-east-1
+          function_name: m-s-apis-io-publishmaintainers-pu
+          zip_file: m-s-apis-io-publishmaintainers-pu.zip
+      - name: /publish/tags put lambda deploy zip
+        uses: api-search/publishing-api@main
+        with:
+          args: zip -qq -r m-s-apis-io-publishtags-pu.zip paths/publish/tags/put/index.js node_modules
+      - name: publishing-api get lambda deploy
+        uses: appleboy/lambda-action@master
+        with:
+          aws_access_key_id: ${{secrets.AWS_ACCESS_KEY_ID}}
+          aws_secret_access_key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+          aws_region: us-east-1
+          function_name: m-s-apis-io-publishtags-pu
+          zip_file: m-s-apis-io-publishtags-pu.zip

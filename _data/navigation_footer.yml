@@ -1,0 +1,22 @@
+# Footer navigation links
+
+- title: APIs.yaml
+  url: https://apis-io-api.apievangelist.com/apis-consumer.yml
+
+- title: Change Log
+  url: https://apis-io-api.apievangelist.com/change-log
+
+- title: Road Map
+  url: https://apis-io-api.apievangelist.com/road-map
+
+- title: Terms of Services
+  url: https://apis-io-api.apievangelist.com/terms-of-service
+
+- title: Licensing
+  url: https://apis-io-api.apievangelist.com/licensing
+
+- title: Privacy Policy
+  url: https://apis-io-api.apievangelist.com/privacy-policy
+
+- title: Sitemap.xml
+  url: https://apis-io-api.apievangelist.com/sitemap.xml
