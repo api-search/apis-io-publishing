@@ -80,6 +80,7 @@ exports.handler = vandium.generic()
             publish_api.published = true;
             publish_api.layout = "post";
             publish_api.score = apis_score;
+            publish_api.percentage = apis_percentage;
 
             //console.log("PUBLISH API");
             //console.log(publish_api);
@@ -163,7 +164,7 @@ exports.handler = vandium.generic()
                           //response.sql = sql;
                           //response.body = body;
                           response.message = "Published  " + apis_name + " to GitHub";
-                          callback( null, response);
+                          callback( null, github_results);
                           connection.end();
                         });                         
 
@@ -173,7 +174,7 @@ exports.handler = vandium.generic()
 
                         var response = {};
                         response['pulling'] = "Error writing to GitHub.";            
-                        callback( null, response );  
+                        callback( null, github_results );  
                         connection.end();
 
                       });
