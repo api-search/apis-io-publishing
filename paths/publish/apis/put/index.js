@@ -88,7 +88,7 @@ exports.handler = vandium.generic()
             const options = {
                 hostname: 'api.github.com',
                 method: 'GET',
-                path: '/repos/api-search/web-site/contents/_posts/' + timestamp + '-' + apis_slug + '.yaml',
+                path: '/repos/api-search/web-site/contents/_posts/' + timestamp + '-' + apis_slug + '.md',
                 headers: {
                   "Accept": "application/vnd.github+json",
                   "User-Agent": "apis-io-search",
@@ -135,7 +135,7 @@ exports.handler = vandium.generic()
                   const options = {
                       hostname: 'api.github.com',
                       method: 'PUT',
-                      path: '/repos/api-search/web-site/contents/_posts/' + timestamp + '-' + apis_slug + '.yaml',
+                      path: '/repos/api-search/web-site/contents/_posts/' + timestamp + '-' + apis_slug + '.md',
                       headers: {
                         "Accept": "application/vnd.github+json",
                         "User-Agent": "apis-io-search",
