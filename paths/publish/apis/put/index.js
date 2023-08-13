@@ -26,6 +26,7 @@ exports.handler = vandium.generic()
         
         // Pull any new ones.
         var apis_name = results[0].name;
+        var apis_base_url = results[0].baseURL;
 
         var apis_slug = apis_name.replace(/ /g, '+').toLowerCase();;     
 
@@ -137,10 +138,13 @@ exports.handler = vandium.generic()
           
                       res.on('end', () => {
 
-                        var response = {};
-                        response['pulling'] = "Published to GitHub.";            
-                        callback( null, response );  
-                        connection.end();
+                        var sql = "UPDATE apis SET published = " + weekNumber + " WHERE baseURL = '" + apis_base_url + "'";
+                        connection.query(sql, function (error, results, fields) { 
+                          var response = {};
+                          response.message = "Published  " + apis_name + " to GitHub";
+                          callback( null, response);
+                          connection.end();
+                        });                         
 
                       });
 
@@ -154,9 +158,6 @@ exports.handler = vandium.generic()
                       });
 
                   });
-
-                  console.log("PUBLISH API-2");
-                  console.log(m);
 
                 req.write(JSON.stringify(m));
                 req.end();   
