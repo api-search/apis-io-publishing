@@ -68,8 +68,8 @@ exports.handler = vandium.generic()
 
             }
 
-            console.log("PUBLISH API");
-            console.log(publish_api);
+            //console.log("PUBLISH API");
+            //console.log(publish_api);
 
             // Check from github
             const options = {
