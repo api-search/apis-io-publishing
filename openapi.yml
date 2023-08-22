@@ -2,8 +2,8 @@ openapi: 3.0.0
 
 info:
 
-  title: 'APIs.io API'
-  description: 'This is the public version of the APis.io API search engine, providing search, submission, and engine capabilities.'
+  title: 'APIs.io Publishinging API'
+  description: 'This is the API that publishes APIs, maintainers, properties, and tags for the APIs.io search engine.'
   version: V1
 
   contact:
@@ -14,20 +14,8 @@ servers:
   - url: https://dqkupdnj9l.execute-api.us-east-1.amazonaws.com/staging    
 
 tags:
-
-  - name: Search
-    description: Search using the engine.
-  - name: Tags
-    description: The tags for the engine.       
-  - name: Properties
-    description: The properties for the engine.
-  - name: Maintainers
-    description: The maintainers for the engine.
-  - name: Rules
-    description: The rules for the engine.   
-  - name: Engine
-    description: The engine for search.     
-  - name: Publish
+    
+  - name: Publishinging
     description: The publishing for the engine.        
     
 paths:
@@ -37,10 +25,10 @@ paths:
 
     put:
       operationId: publishAPIs
-      summary: 'Publish Latest APIs'
-      description: 'Publish all APIs to a target destination.'
+      summary: 'Publishing Latest APIs'
+      description: 'Publishing all APIs to a target destination.'
       tags:
-        - Publish
+        - Publishing
 
       responses:
         "200":
@@ -52,16 +40,16 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PublishAPIs"  
+                $ref: "#/components/schemas/PublishingAPIs"  
                 
   /publish/maintainers:
 
     put:
       operationId: publishMaintainers
-      summary: 'Publish Maintainers'
-      description: 'Publish all maintainers to a target destination.'
+      summary: 'Publishing Maintainers'
+      description: 'Publishing all maintainers to a target destination.'
       tags:
-        - Publish
+        - Publishing
 
       responses:
         "200":
@@ -73,16 +61,16 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PublishMaintainers"  
+                $ref: "#/components/schemas/PublishingMaintainers"  
                 
   /publish/tags:
 
     put:
       operationId: publishTags
-      summary: 'Publish Tags'
-      description: 'Publish all tags to a target destination.'
+      summary: 'Publishing Tags'
+      description: 'Publishing all tags to a target destination.'
       tags:
-        - Publish
+        - Publishing
 
       responses:
         "200":
@@ -94,7 +82,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PublishTags"                     
+                $ref: "#/components/schemas/PublishingTags"                     
                        
 
 components:
@@ -499,7 +487,7 @@ components:
         run:
           type: string       
 
-    PublishAPIs:
+    PublishingAPIs:
       description: Results of latest pull.
       required:
         - name
@@ -513,7 +501,7 @@ components:
         run:
           type: string 
 
-    PublishProperties:
+    PublishingProperties:
       description: Results of latest pull.
       required:
         - name
@@ -527,7 +515,7 @@ components:
         run:
           type: string   
 
-    PublishTags:
+    PublishingTags:
       description: Results of latest pull.
       required:
         - name
@@ -541,7 +529,7 @@ components:
         run:
           type: string  
 
-    PublishMaintainers:
+    PublishingMaintainers:
       description: Results of latest pull.
       required:
         - name
