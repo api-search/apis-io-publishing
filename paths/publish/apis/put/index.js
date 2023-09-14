@@ -52,7 +52,7 @@ exports.handler = vandium.generic()
         var save_apisjson_path = 'apis-io/api/apis-json/' + apisjson_slug + "/" + weekNumber + "/apis.json";
         var local_apis_json = "https://kinlane-productions2.s3.amazonaws.com/" + save_apisjson_path;
         
-        //console.log(local_apis_json);
+        console.log(local_apis_json);
 
         https.get(local_apis_json, res => {
           
