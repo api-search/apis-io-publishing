@@ -47,10 +47,10 @@ exports.handler = vandium.generic()
         apisjson_slug = apisjson_slug.replace('https://','https-');
         apisjson_slug = apisjson_slug.replace(/\//g, '-');
         apisjson_slug = apisjson_slug.replace('.','-');
-        apisjson_slug = apisjson_slug.replace('https-','');        
-        apisjson_slug = apisjson_slug.replace('www-','-');
 
         var slug = apisjson_slug + '-' + apis_slug;
+        slug = slug.replace('https-','');        
+        slug = slug.replace('www-','-');
         
         var save_apisjson_path = 'apis-io/api/apis-json/' + apisjson_slug + "/" + weekNumber + "/apis.json";
         var local_apis_json = "https://kinlane-productions2.s3.amazonaws.com/" + save_apisjson_path;
