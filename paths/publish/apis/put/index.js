@@ -51,13 +51,6 @@ exports.handler = vandium.generic()
         var slug = apisjson_slug + '-' + apis_slug;
         slug = slug.replace('https-','');        
         slug = slug.replace('www-','-');
-        slug = slug.replace(/./g, '-');
-        if(slug.charAt(0) === '-'){
-          slug = slug.substr(1, slug.length);
-        }
-        if(slug.charAt(slug.length) === '-'){
-          slug = slug.substr(1, slug.length-1);
-        }        
         
         var save_apisjson_path = 'apis-io/api/apis-json/' + apisjson_slug + "/" + weekNumber + "/apis.json";
         var local_apis_json = "https://kinlane-productions2.s3.amazonaws.com/" + save_apisjson_path;
@@ -98,10 +91,13 @@ exports.handler = vandium.generic()
             //console.log(publish_api);
 
             // Check from github
+            var path = '/repos/api-search/web-site/contents/_posts/2023-09-01-' + slug + '.md';
+            path = path.replace('--', '-');
+            path = path.replace('--', '-');
             const options = {
                 hostname: 'api.github.com',
                 method: 'GET',
-                path: '/repos/api-search/web-site/contents/_posts/2023-09-01-' + slug + '.md',
+                path: path,
                 headers: {
                   "Accept": "application/vnd.github+json",
                   "User-Agent": "apis-io-search",
@@ -150,10 +146,13 @@ exports.handler = vandium.generic()
                   m.content = btoa(unescape(encodeURIComponent(api_yaml)));
 
                   // Check from github
+                  var path = '/repos/api-search/web-site/contents/_posts/2023-09-01-' + slug + '.md';
+                  path = path.replace('--', '-');
+                  path = path.replace('--', '-');                  
                   const options = {
                       hostname: 'api.github.com',
                       method: 'PUT',
-                      path: '/repos/api-search/web-site/contents/_posts/2023-09-01-' + slug + '.md',
+                      path: path,
                       headers: {
                         "Accept": "application/vnd.github+json",
                         "User-Agent": "apis-io-search",
