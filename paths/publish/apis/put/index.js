@@ -93,7 +93,7 @@ exports.handler = vandium.generic()
             const options = {
                 hostname: 'api.github.com',
                 method: 'GET',
-                path: '/repos/api-search/web-site/contents/_posts/0000-00-00-' + slug + '.md',
+                path: '/repos/api-search/web-site/contents/_posts/2023-09-01-' + slug + '.md',
                 headers: {
                   "Accept": "application/vnd.github+json",
                   "User-Agent": "apis-io-search",
@@ -145,7 +145,7 @@ exports.handler = vandium.generic()
                   const options = {
                       hostname: 'api.github.com',
                       method: 'PUT',
-                      path: '/repos/api-search/web-site/contents/_posts/0000-00-00-' + slug + '.md',
+                      path: '/repos/api-search/web-site/contents/_posts/2023-09-01-' + slug + '.md',
                       headers: {
                         "Accept": "application/vnd.github+json",
                         "User-Agent": "apis-io-search",
