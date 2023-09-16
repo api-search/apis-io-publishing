@@ -42,13 +42,15 @@ exports.handler = vandium.generic()
         apis_slug = apis_slug.toLowerCase();    
 
         var apisjson_url = results[0].apisjson_url;
-        var apisjson_slug = apis_name.replace('http://','http-');
+        var apisjson_slug = apisjson_url.replace('http://','http-');
         apisjson_slug = apisjson_slug.replace('.json','');
         apisjson_slug = apisjson_slug.replace('.yaml','');
         apisjson_slug = apisjson_slug.replace('https://','https-');
         apisjson_slug = apisjson_slug.replace(/\//g, '-');
         apisjson_slug = apisjson_slug.replace('.','-');
 
+        var slug = apis_slug + '-' + apisjson_slug;
+        
         var save_apisjson_path = 'apis-io/api/apis-json/' + apisjson_slug + "/" + weekNumber + "/apis.json";
         var local_apis_json = "https://kinlane-productions2.s3.amazonaws.com/" + save_apisjson_path;
         
@@ -91,7 +93,7 @@ exports.handler = vandium.generic()
             const options = {
                 hostname: 'api.github.com',
                 method: 'GET',
-                path: '/repos/api-search/web-site/contents/_posts/0000-00-00-' + apis_slug + '.md',
+                path: '/repos/api-search/web-site/contents/_posts/0000-00-00-' + slug + '.md',
                 headers: {
                   "Accept": "application/vnd.github+json",
                   "User-Agent": "apis-io-search",
@@ -143,7 +145,7 @@ exports.handler = vandium.generic()
                   const options = {
                       hostname: 'api.github.com',
                       method: 'PUT',
-                      path: '/repos/api-search/web-site/contents/_posts/0000-00-00-' + apis_slug + '.md',
+                      path: '/repos/api-search/web-site/contents/_posts/0000-00-00-' + slug + '.md',
                       headers: {
                         "Accept": "application/vnd.github+json",
                         "User-Agent": "apis-io-search",
