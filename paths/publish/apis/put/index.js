@@ -42,7 +42,7 @@ exports.handler = vandium.generic()
         apis_slug = apis_slug.toLowerCase();    
 
         var apisjson_url = results[0].apisjson_url;
-        var apisjson_slug = apisjson_url.replace('http://','http-');
+        var apisjson_slug = apis_name.replace('http://','http-');
         apisjson_slug = apisjson_slug.replace('.json','');
         apisjson_slug = apisjson_slug.replace('.yaml','');
         apisjson_slug = apisjson_slug.replace('https://','https-');
