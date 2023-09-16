@@ -94,6 +94,7 @@ exports.handler = vandium.generic()
             var path = '/repos/api-search/web-site/contents/_posts/2023-09-01-' + slug + '.md';
             path = path.replace('--', '-');
             path = path.replace('--', '-');
+            path = path.replace('raw-githubusercontent.com-','');
             const options = {
                 hostname: 'api.github.com',
                 method: 'GET',
@@ -148,7 +149,8 @@ exports.handler = vandium.generic()
                   // Check from github
                   var path = '/repos/api-search/web-site/contents/_posts/2023-09-01-' + slug + '.md';
                   path = path.replace('--', '-');
-                  path = path.replace('--', '-');                  
+                  path = path.replace('--', '-');  
+                  path = path.replace('raw-githubusercontent.com-','');                
                   const options = {
                       hostname: 'api.github.com',
                       method: 'PUT',
