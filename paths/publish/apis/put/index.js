@@ -22,7 +22,6 @@ exports.handler = vandium.generic()
     var month = (currentDate.getMonth() + 101).toString().substring(1);
     var day = (currentDate.getDate() + 100).toString().substring(1);
     var timestamp =  year + "-" + month + "-" + day;
-    console.log(timestamp);
     
     var sql = 'select a.name,a.description,a.image,a.baseURL,a.humanURL,a.apisjson_url,a.tags,a.published,(select score from apisjson aj WHERE aj.url = a.apisjson_url) as score,(select percentage from apisjson aj WHERE aj.url = a.apisjson_url) as percentage,(select rules from apisjson aj WHERE aj.url = a.apisjson_url) as rules from apis a WHERE a.published <> ' + weekNumber;
     connection.query(sql, function (error, results, fields) {
@@ -48,8 +47,10 @@ exports.handler = vandium.generic()
         apisjson_slug = apisjson_slug.replace('https://','https-');
         apisjson_slug = apisjson_slug.replace(/\//g, '-');
         apisjson_slug = apisjson_slug.replace('.','-');
+        apisjson_slug = apisjson_slug.replace('https-','');        
+        apisjson_slug = apisjson_slug.replace('www-','-');
 
-        var slug = apis_slug + '-' + apisjson_slug;
+        var slug = apisjson_slug + '-' + apis_slug;
         
         var save_apisjson_path = 'apis-io/api/apis-json/' + apisjson_slug + "/" + weekNumber + "/apis.json";
         var local_apis_json = "https://kinlane-productions2.s3.amazonaws.com/" + save_apisjson_path;
