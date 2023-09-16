@@ -91,7 +91,7 @@ exports.handler = vandium.generic()
             const options = {
                 hostname: 'api.github.com',
                 method: 'GET',
-                path: '/repos/api-search/web-site/contents/_posts/' + timestamp + '-' + apis_slug + '.md',
+                path: '/repos/api-search/web-site/contents/_posts/0000-00-00-' + apis_slug + '.md',
                 headers: {
                   "Accept": "application/vnd.github+json",
                   "User-Agent": "apis-io-search",
