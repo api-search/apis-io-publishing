@@ -51,6 +51,7 @@ exports.handler = vandium.generic()
         var slug = apisjson_slug + '-' + apis_slug;
         slug = slug.replace('https-','');        
         slug = slug.replace('www-','-');
+        slug = slug.replace(/./g, '-');
         if(slug.charAt(0) === '-'){
           slug = slug.substr(1, slug.length);
         }
