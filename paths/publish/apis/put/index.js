@@ -46,7 +46,7 @@ exports.handler = vandium.generic()
         apisjson_slug = apisjson_slug.replace('.yaml','');
         apisjson_slug = apisjson_slug.replace('https://','https-');
         apisjson_slug = apisjson_slug.replace(/\//g, '-');
-        apisjson_slug = apisjson_slug.replace('.','-');
+        apisjson_slug = apisjson_slug.replace('/./g','-');
 
         var slug = apisjson_slug + '-' + apis_slug;
         slug = slug.replace('https-','');        
