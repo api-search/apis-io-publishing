@@ -23,7 +23,7 @@ exports.handler = vandium.generic()
     var day = (currentDate.getDate() + 100).toString().substring(1);
     var timestamp =  year + "-" + month + "-" + day;
     
-    var sql = 'select a.name,a.description,a.image,a.baseURL,a.humanURL,a.apisjson_url,a.tags,a.published,(select score from apisjson aj WHERE aj.url = a.apisjson_url) as score,(select percentage from apisjson aj WHERE aj.url = a.apisjson_url) as percentage,(select rules from apisjson aj WHERE aj.url = a.apisjson_url) as rules from apis a WHERE a.published <> ' + weekNumber;
+    var sql = 'select a.name,a.slug as api_slug,a.description,a.image,a.baseURL,a.humanURL,a.apisjson_url,a.tags,a.published,(select score from apisjson aj WHERE aj.url = a.apisjson_url) as score,(select slug from apisjson aj WHERE aj.url = a.apisjson_url) as domain_slug,(select percentage from apisjson aj WHERE aj.url = a.apisjson_url) as percentage,(select rules from apisjson aj WHERE aj.url = a.apisjson_url) as rules from apis a WHERE a.published <> ' + weekNumber;
     connection.query(sql, function (error, results, fields) {
 
       if(results && results.length > 0){
@@ -34,25 +34,12 @@ exports.handler = vandium.generic()
         var apis_score = results[0].score;
         var apis_percentage = results[0].percentage;
         var apis_rules = results[0].rules;
+        var domain_slug = results[0].domain_slug;
+        var api_slug = results[0].api_slug;
 
-        var apis_slug = apis_name;
-        apis_slug = apis_slug.replace(/,/g, '');
-        apis_slug = apis_slug.replace(/ /g, '-');
-        apis_slug = apis_slug.toLowerCase();    
-
-        var apisjson_url = results[0].apisjson_url;
-        var apisjson_slug = apisjson_url.replace('http://','http-');
-        apisjson_slug = apisjson_slug.replace('.json','');
-        apisjson_slug = apisjson_slug.replace('.yaml','');
-        apisjson_slug = apisjson_slug.replace('https://','https-');
-        apisjson_slug = apisjson_slug.replace(/\//g, '-');
-        apisjson_slug = apisjson_slug.replace('/./g','-');
-
-        var slug = apisjson_slug + '-' + apis_slug;
-        slug = slug.replace('https-','');        
-        slug = slug.replace('www-','-');
+        var slug = domain_slug + '-' + api_slug;
         
-        var save_apisjson_path = 'apis-io/api/apis-json/' + apisjson_slug + "/" + weekNumber + "/apis.json";
+        var save_apisjson_path = 'apis-io/api/apis-json/' + domain_slug + "/" + weekNumber + "/apis.json";
         var local_apis_json = "https://kinlane-productions2.s3.amazonaws.com/" + save_apisjson_path;
         
         console.log(local_apis_json);
@@ -92,9 +79,6 @@ exports.handler = vandium.generic()
 
             // Check from github
             var path = '/repos/api-search/web-site/contents/_posts/2023-09-01-' + slug + '.md';
-            path = path.replace('--', '-');
-            path = path.replace('--', '-');
-            path = path.replace('raw-githubusercontent.com-','');
             const options = {
                 hostname: 'api.github.com',
                 method: 'GET',
@@ -147,10 +131,7 @@ exports.handler = vandium.generic()
                   m.content = btoa(unescape(encodeURIComponent(api_yaml)));
 
                   // Check from github
-                  var path = '/repos/api-search/web-site/contents/_posts/2023-09-01-' + slug + '.md';
-                  path = path.replace('--', '-');
-                  path = path.replace('--', '-');  
-                  path = path.replace('raw-githubusercontent.com-','');                
+                  var path = '/repos/api-search/web-site/contents/_posts/2023-09-01-' + slug + '.md';           
                   const options = {
                       hostname: 'api.github.com',
                       method: 'PUT',
