@@ -45,10 +45,10 @@ exports.handler = vandium.generic()
           domain_slug = domain_slug.replace('/apis.json','');
         }
         else{                 
-          domain = new URL(apisjson_url);
-          console.log(domain);
-          domain_slug = domain.hostname;
-          console.log(domain);
+          domain_slug = apisjson_url;
+          domain_slug = domain_slug.replace('https://','');
+          domain_slug = domain_slug.replace('http://','');
+          domain_slug = domain_slug.replace('www.','');
           domain_slug = domain_slug.replace(/\./g,'');
           domain_slug = domain_slug.replace(/\-/g,'');
           domain_slug = domain_slug.replace(/\&/g,'');
