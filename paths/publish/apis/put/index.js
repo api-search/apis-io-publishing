@@ -41,8 +41,8 @@ exports.handler = vandium.generic()
 
         if(apisjson_url.includes("raw.githubusercontent.com") == ''){
           // This is just for all of the historic ones I have that are unofficial.
-          domain_slug = domain_slug('https://raw.githubusercontent.com/api-search/historic/main/','');
-          domain_slug = domain_slug('/apis.json','');
+          domain_slug = domain_slug.replace('https://raw.githubusercontent.com/api-search/historic/main/','');
+          domain_slug = domain_slug.replace('/apis.json','');
         }
         else{      
           // parse the url    
