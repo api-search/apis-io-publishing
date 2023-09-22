@@ -27,6 +27,8 @@ exports.handler = vandium.generic()
     connection.query(sql, function (error, results, fields) {
 
       if(results && results.length > 0){
+
+        console.log("sql: " + sql);
         
         // Pull any new ones.
         var apis_name = results[0].name;
