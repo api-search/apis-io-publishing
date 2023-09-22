@@ -38,12 +38,12 @@ exports.handler = vandium.generic()
         var api_slug = results[0].api_slug;
 
         var slug = domain_slug + '-' + api_slug;
-        console.log(slug);
+        console.log("slug: " + slug);
         
         var save_apisjson_path = 'apis-io/api/apis-json/' + domain_slug + "/" + weekNumber + "/apis.json";
         var local_apis_json = "https://kinlane-productions2.s3.amazonaws.com/" + save_apisjson_path;
         
-        console.log(local_apis_json);
+        //console.log(local_apis_json);
 
         https.get(local_apis_json, res => {
           
@@ -91,7 +91,7 @@ exports.handler = vandium.generic()
               }
             };
 
-            console.log(options);
+            //console.log(options);
 
             https.get(options, (res) => {
 
