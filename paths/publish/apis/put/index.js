@@ -23,7 +23,7 @@ exports.handler = vandium.generic()
     var day = (currentDate.getDate() + 100).toString().substring(1);
     var timestamp =  year + "-" + month + "-" + day;
     
-    var sql = 'select a.name,a.slug as api_slug,a.description,a.image,a.baseURL,a.humanURL,a.apisjson_url,a.tags,a.published,(select score from apisjson aj WHERE aj.url = a.apisjson_url) as score,(select slug from apisjson aj WHERE aj.url = a.apisjson_url) as domain_slug,(select percentage from apisjson aj WHERE aj.url = a.apisjson_url) as percentage,(select rules from apisjson aj WHERE aj.url = a.apisjson_url) as rules from apis a WHERE a.published <> ' + weekNumber;
+    var sql = 'select a.name,a.description,a.image,a.baseURL,a.humanURL,a.apisjson_url,a.tags,a.published,(select score from apisjson aj WHERE aj.url = a.apisjson_url) as score,(select percentage from apisjson aj WHERE aj.url = a.apisjson_url) as percentage,(select rules from apisjson aj WHERE aj.url = a.apisjson_url) as rules from apis a WHERE a.published <> ' + weekNumber;
     connection.query(sql, function (error, results, fields) {
 
       if(results && results.length > 0){
@@ -36,8 +36,31 @@ exports.handler = vandium.generic()
         var apis_score = results[0].score;
         var apis_percentage = results[0].percentage;
         var apis_rules = results[0].rules;
-        var domain_slug = results[0].domain_slug;
+        
+        var apisjson_url = results[0].apisjson_url;
+
+        if(apisjson_url.includes("raw.githubusercontent.com") == ''){
+          // This is just for all of the historic ones I have that are unofficial.
+          domain_slug = domain_slug('https://raw.githubusercontent.com/api-search/historic/main/','');
+          domain_slug = domain_slug('/apis.json','');
+        }
+        else{      
+          // parse the url    
+          domain = new URL(apisjson_url);
+          domain_slug = domain.hostname;
+          // This needs cleaning up.
+          domain_slug = domain_slug(/\./g,'');
+          domain_slug = domain_slug(/\-/g,'');
+          domain_slug = domain_slug(/\&/g,'');
+          }
+
         var api_slug = results[0].api_slug;
+        // This needs cleaning up.
+        api_slug = api_slug(/\./g,'');
+        api_slug = domain_slug(/\-/g,'');
+        api_slug = api_slug(/\&/g,'');
+        api_slug = api_slug(/\ /g,'-');
+        api_slug = api_slug.toLowerCase();
 
         var slug = domain_slug + '-' + api_slug;
         console.log("slug: " + slug);
