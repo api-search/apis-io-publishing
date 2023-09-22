@@ -54,12 +54,12 @@ exports.handler = vandium.generic()
           domain_slug = domain_slug(/\&/g,'');
           }
 
-        var api_slug = results[0].api_slug;
+        var api_slug = apis_name;
         // This needs cleaning up.
-        api_slug = api_slug(/\./g,'');
-        api_slug = domain_slug(/\-/g,'');
-        api_slug = api_slug(/\&/g,'');
-        api_slug = api_slug(/\ /g,'-');
+        api_slug = api_slug.replace(/\./g,'');
+        api_slug = api_slug.replace(/\-/g,'');
+        api_slug = api_slug.replace(/\&/g,'');
+        api_slug = api_slug.replace(/\ /g,'-');
         api_slug = api_slug.toLowerCase();
 
         var slug = domain_slug + '-' + api_slug;
