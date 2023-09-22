@@ -46,14 +46,15 @@ exports.handler = vandium.generic()
         }
         else{                 
           domain = new URL(apisjson_url);
+          console.log(domain);
           domain_slug = domain.hostname;
+          console.log(domain);
           domain_slug = domain_slug.replace(/\./g,'');
           domain_slug = domain_slug.replace(/\-/g,'');
           domain_slug = domain_slug.replace(/\&/g,'');
           }
 
         var api_slug = apis_name;
-        // This needs cleaning up.
         api_slug = api_slug.replace(/\./g,'');
         api_slug = api_slug.replace(/\-/g,'');
         api_slug = api_slug.replace(/\&/g,'');
