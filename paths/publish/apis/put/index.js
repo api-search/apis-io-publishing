@@ -44,14 +44,12 @@ exports.handler = vandium.generic()
           domain_slug = apisjson_url.replace('https://raw.githubusercontent.com/api-search/historic/main/','');
           domain_slug = domain_slug.replace('/apis.json','');
         }
-        else{      
-          // parse the url    
+        else{                 
           domain = new URL(apisjson_url);
           domain_slug = domain.hostname;
-          // This needs cleaning up.
-          domain_slug = domain_slug(/\./g,'');
-          domain_slug = domain_slug(/\-/g,'');
-          domain_slug = domain_slug(/\&/g,'');
+          domain_slug = domain_slug.replace(/\./g,'');
+          domain_slug = domain_slug.replace(/\-/g,'');
+          domain_slug = domain_slug.replace(/\&/g,'');
           }
 
         var api_slug = apis_name;
@@ -68,7 +66,7 @@ exports.handler = vandium.generic()
         var save_apisjson_path = 'apis-io/api/apis-json/' + domain_slug + "/" + weekNumber + "/apis.json";
         var local_apis_json = "https://kinlane-productions2.s3.amazonaws.com/" + save_apisjson_path;
         
-        //console.log(local_apis_json);
+        console.log(local_apis_json);
 
         https.get(local_apis_json, res => {
           
