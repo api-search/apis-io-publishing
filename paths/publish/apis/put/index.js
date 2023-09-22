@@ -185,7 +185,7 @@ exports.handler = vandium.generic()
                           var response = {};
                           //response.sql = sql;
                           //response.body = body;
-                          response.message = "Published  " + slug + " to GitHub";
+                          response.message = "Published  " + slug + " to GitHub!!";
                           callback( null, response);
                           connection.end();
                         });                         
