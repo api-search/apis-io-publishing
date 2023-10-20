@@ -23,212 +23,166 @@ exports.handler = vandium.generic()
     var day = (currentDate.getDate() + 100).toString().substring(1);
     var timestamp =  year + "-" + month + "-" + day;
     
-    var sql = 'select a.name,a.description,a.image,a.baseURL,a.humanURL,a.apisjson_url,a.tags,a.published,(select score from apisjson aj WHERE aj.url = a.apisjson_url) as score,(select percentage from apisjson aj WHERE aj.url = a.apisjson_url) as percentage,(select rules from apisjson aj WHERE aj.url = a.apisjson_url) as rules from apis a WHERE a.published <> ' + weekNumber;
+    var sql = 'select a.name,ao.name as name2,a.slug,ao.slug as slug2,a.description,ao.description AS description2,a.image,ao.image AS image2,a.baseURL,a.humanURL,a.apisjson_url,a.tags,a.published,(select name from apisjson_overlay aj WHERE aj.apisjson_url = a.apisjson_url) as indexName,(select score from apisjson aj WHERE aj.url = a.apisjson_url) as score,(select percentage from apisjson aj WHERE aj.url = a.apisjson_url) as percentage,(select rules from apisjson aj WHERE aj.url = a.apisjson_url) as rules FROM apis a LEFT JOIN apis_overlay ao ON a.humanURL = ao.humanURL WHERE a.published <> ' + weekNumber;
     connection.query(sql, function (error, results, fields) {
 
       if(results && results.length > 0){
 
-        console.log("sql: " + sql);
-        
-        // Pull any new ones.
-        var apis_name = results[0].name;
+        var apis_name = results[0].name2;
+        var apis_slug = results[0].slug2;
+        var apis_description = results[0].description;
+        var apis_image = results[0].image;
+        var apis_tags = results[0].tags;
+        var apis_human_url = results[0].humanUrl;
         var apis_base_url = results[0].baseURL;
         var apis_score = results[0].score;
         var apis_percentage = results[0].percentage;
         var apis_rules = results[0].rules;
-        
         var apisjson_url = results[0].apisjson_url;
+        
+        var publish_api = {};
+        
+        // Needed for Static Layout
+        publish_api.layout = "post";
+        publish_api.published = true;
 
-        if(apisjson_url.includes("raw.githubusercontent.com")){
-          console.log("1111");
-          // This is just for all of the historic ones I have that are unofficial.
-          domain_slug = apisjson_url.replace('https://raw.githubusercontent.com/api-search/historic/main/','');
-          domain_slug = domain_slug.replace('/apis.json','');
-        }
-        else{        
-          console.log("2222");
-          domain_slug = apisjson_url;
-          domain_slug = domain_slug.replace('https://','');
-          domain_slug = domain_slug.replace('http://','');
-          domain_slug = domain_slug.replace('www.','');
-          domain_slug = domain_slug.replace('/apis.json','');
-          domain_slug = domain_slug.replace('/','-');
-          domain_slug = domain_slug.replace('/','-');
-          domain_slug = domain_slug.replace(/\./g,'-');
-          domain_slug = domain_slug.replace(/\&/g,'');
-          domain_slug = domain_slug.replace(/\?/g,'');
+        // Main API Details
+        publish_api.name = apis_name;
+        publish_api.description = apis_description;
+        publish_api.image = apis_image;
+        publish_api.tags = apis_tags.split(',');
+      
+        publish_api.humanURL = apis_human_url;
+        publish_api.baseURL = apis_base_url;
+
+        publish_api.score = apis_score;
+        publish_api.percentage = apis_percentage;
+        publish_api.rules = apis_rules;        
+
+        var sql2 = 'select p.type,p.url FROM properties p WHERE p.api_base_url = ' + apis_base_url + ' AND common = 0';
+        connection.query(sql2, function (error2, results2, fields2) {
+    
+          if(results2 && results2.length > 0){      
+                        
+            publish_api.properties = results2;
+
+            var sql3 = 'select p.type,p.url FROM properties p WHERE p.api_base_url = ' + apisjson_url + ' AND common = 1';
+            connection.query(sql3, function (error3, results3, fields3) {
+        
+              if(results3 && results3.length > 0){      
+                            
+                publish_api.common = results3;            
+
+                var path = '/repos/api-search/web-site/contents/_posts/2023-09-01-' + slug + '.md';
+                const options = {
+                    hostname: 'api.github.com',
+                    method: 'GET',
+                    path: path,
+                    headers: {
+                      "Accept": "application/vnd.github+json",
+                      "User-Agent": "apis-io-search",
+                      "Authorization": 'Bearer ' + process.env.gtoken
+                  }
+                };
+
+                https.get(options, (res) => {
+
+                    var body = '';
+                    res.on('data', (chunk) => {
+                        body += chunk;
+                    });
+
+                    res.on('end', () => {
+
+                      var github_results = JSON.parse(body);
+
+                      var sha = '';
+                      if(github_results.sha){
+                        sha = github_results.sha;
+                      }
+
+                      var api_yaml = yaml.dump(publish_api);
+
+                      var c = {};
+                      c.name = "Kin Lane";
+                      c.email = "kinlane@gmail.com";
+
+                      var m = {};
+                      m.message = 'Publishing OpenAPI';
+                      m.committer = c;
+                      m.sha = sha;
+                      m.content = btoa(unescape(encodeURIComponent(api_yaml)));
+
+                      // Check from github
+                      var path = '/repos/api-search/web-site/contents/_posts/2023-09-01-' + slug + '.md';           
+                      const options = {
+                          hostname: 'api.github.com',
+                          method: 'PUT',
+                          path: path,
+                          headers: {
+                            "Accept": "application/vnd.github+json",
+                            "User-Agent": "apis-io-search",
+                            "Authorization": 'Bearer ' + process.env.gtoken
+                        }
+                      };
+
+                      //console.log(options);
+
+                      var req = https.request(options, (res) => {
+
+                          let body = '';
+                          res.on('data', (chunk) => {
+                              body += chunk;
+                          });
+              
+                          res.on('end', () => {
+
+                            var sql = "UPDATE apis SET published = " + weekNumber + " WHERE baseURL = '" + apis_base_url + "'";
+                            //var sql = "UPDATE apis SET published = 0 WHERE baseURL = '" + apis_base_url + "'";
+                            connection.query(sql, function (error, results, fields) { 
+                              var response = {};
+                              //response.sql = sql;
+                              //response.body = body;
+                              response.message = "Published  " + slug + " to GitHub!!";
+                              callback( null, response);
+                              connection.end();
+                            });                         
+
+                          });
+
+                          res.on('error', () => {
+
+                            var response = {};
+                            response['pulling'] = "Error writing to GitHub.";            
+                            callback( null, response );  
+                            connection.end();
+
+                          });
+
+                      });
+
+                    req.write(JSON.stringify(m));
+                    req.end();   
+
+                    });              
+
+                    res.on('error', () => {
+
+                      var response = {};
+                      response['pulling'] = "Error reading from GitHub.";            
+                      callback( null, response );  
+                      connection.end();
+                    });
+
+                });   
+
+              }
+
+            });  // End Common                
+          
           }
 
-        var api_slug = apis_name;
-        api_slug = api_slug.replace(/\./g,'');
-        api_slug = api_slug.replace(/\-/g,'');
-        api_slug = api_slug.replace(/\&/g,'');
-        api_slug = api_slug.replace(/\ /g,'-');
-        api_slug = api_slug.toLowerCase();
-
-        var slug = domain_slug + '-' + api_slug;
-        console.log("slug: " + slug);
-        
-        var save_apisjson_path = 'apis-io/api/apis-json/' + domain_slug + "/" + weekNumber + "/apis.json";
-        var local_apis_json = "https://kinlane-productions2.s3.amazonaws.com/" + save_apisjson_path;
-        
-        console.log(local_apis_json);
-
-        https.get(local_apis_json, res => {
-          
-          let data = [];
-          //const headerDate = res.headers && res.headers.date ? res.headers.date : 'no response date';
-          
-          //console.log('Status Code:', res.statusCode);
-          //console.log('Date in Response header:', headerDate);
-        
-          res.on('data', chunk => {
-            data.push(chunk);
-          });
-        
-          res.on('end', () => {
-
-            var apisjson = JSON.parse(Buffer.concat(data).toString());
-            var publish_api = {};
-            for (let i = 0; i < apisjson.apis.length; i++) {
-
-              if(apisjson.apis[i].name == apis_name){
-                publish_api = apisjson.apis[i];
-              }
-
-            }
-
-            publish_api.published = true;
-            publish_api.layout = "post";
-            publish_api.score = apis_score;
-            publish_api.percentage = apis_percentage;
-            publish_api.rules = apis_rules;
-
-            //console.log("PUBLISH API");
-            //console.log(publish_api);
-
-            // Check from github
-            var path = '/repos/api-search/web-site/contents/_posts/2023-09-01-' + slug + '.md';
-            const options = {
-                hostname: 'api.github.com',
-                method: 'GET',
-                path: path,
-                headers: {
-                  "Accept": "application/vnd.github+json",
-                  "User-Agent": "apis-io-search",
-                  "Authorization": 'Bearer ' + process.env.gtoken
-              }
-            };
-
-            //console.log(options);
-
-            https.get(options, (res) => {
-
-                var body = '';
-                res.on('data', (chunk) => {
-                    body += chunk;
-                });
-    
-                res.on('end', () => {
-
-                  //console.log(res);
-
-                  //var body = Buffer.concat(body).toString();
-                  //console.log(body);
-                  var github_results = JSON.parse(body);
-                  //console.log(github_results);
-
-                  var sha = '';
-                  if(github_results.sha){
-                    sha = github_results.sha;
-                  }
-
-                  //console.log(sha);
-                  var api_yaml = yaml.dump(publish_api);
-                  api_yaml = '---\r\n' + api_yaml + '---\r\n';
-
-                  //console.log(api_yaml);
-
-                  var c = {};
-                  c.name = "Kin Lane";
-                  c.email = "kinlane@gmail.com";
-
-                  var m = {};
-                  m.message = 'Publishing OpenAPI';
-                  m.committer = c;
-                  m.sha = sha;
-                  //m.content = btoa(api_yaml);
-                  m.content = btoa(unescape(encodeURIComponent(api_yaml)));
-
-                  // Check from github
-                  var path = '/repos/api-search/web-site/contents/_posts/2023-09-01-' + slug + '.md';           
-                  const options = {
-                      hostname: 'api.github.com',
-                      method: 'PUT',
-                      path: path,
-                      headers: {
-                        "Accept": "application/vnd.github+json",
-                        "User-Agent": "apis-io-search",
-                        "Authorization": 'Bearer ' + process.env.gtoken
-                    }
-                  };
-
-                  //console.log(options);
-
-                  var req = https.request(options, (res) => {
-
-                      let body = '';
-                      res.on('data', (chunk) => {
-                          body += chunk;
-                      });
-          
-                      res.on('end', () => {
-
-                        var sql = "UPDATE apis SET published = " + weekNumber + " WHERE baseURL = '" + apis_base_url + "'";
-                        //var sql = "UPDATE apis SET published = 0 WHERE baseURL = '" + apis_base_url + "'";
-                        connection.query(sql, function (error, results, fields) { 
-                          var response = {};
-                          //response.sql = sql;
-                          //response.body = body;
-                          response.message = "Published  " + slug + " to GitHub!!";
-                          callback( null, response);
-                          connection.end();
-                        });                         
-
-                      });
-
-                      res.on('error', () => {
-
-                        var response = {};
-                        response['pulling'] = "Error writing to GitHub.";            
-                        callback( null, response );  
-                        connection.end();
-
-                      });
-
-                  });
-
-                req.write(JSON.stringify(m));
-                req.end();   
-
-                });              
-
-                res.on('error', () => {
-
-                  var response = {};
-                  response['pulling'] = "Error reading from GitHub.";            
-                  callback( null, response );  
-                  connection.end();
-                });
-
-            });
-
-          });
-        }).on('error', err => {
-          var response = {};
-          response['pulling'] = "Problem pulling the APIs.json.";            
-          callback( null, response );  
-        });        
+        });  // End Properties                         
   
       }
       else{
