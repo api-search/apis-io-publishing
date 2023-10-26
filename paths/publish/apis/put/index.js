@@ -59,11 +59,22 @@ exports.handler = vandium.generic()
         publish_api.percentage = apis_percentage;
         publish_api.rules = apis_rules;        
 
+        var sql2 = 'select p.type,p.url FROM properties p WHERE p.api_base_url = ' + apis_base_url + ' AND common = 0';
+        connection.query(sql2, function (error2, results2, fields2) {
+    
+          if(results2 && results2.length > 0){      
+                        
+            publish_api.properties = results2;
+
         // Pull one that is old
         var response = {};
-        response['pulling'] = "Rah";            
-        callback( null, publish_api );  
-        connection.end();                                  
+        response['pulling'] = "No more to publish.";            
+        callback( null, results2 );  
+        connection.end();                  
+          
+          }
+
+        });  // End Properties                         
   
       }
       else{
