@@ -60,15 +60,129 @@ exports.handler = vandium.generic()
         publish_api.rules = apis_rules;        
 
         var sql2 = 'select p.type,p.url FROM properties p WHERE p.api_base_url = ' + connection.escape(apis_base_url) + ' AND common = 0';
-            var sql3 = 'select p.type,p.url FROM properties p WHERE p.api_base_url = ' + connection.escape(apisjson_url) + ' AND common = 1';              
-          
-            var response = {};
-            response.message = "derbug";            
-            response.sql2 = sql2;
-            response.sql3 = sql3;
+        connection.query(sql2, function (error2, results2, fields2) {
+    
+          //if(results2 && results2.length > 0){      
+                        
+            publish_api.properties = results2;
 
-            callback( null, response );  
-            connection.end();                        
+            var sql3 = 'select p.type,p.url FROM properties p WHERE p.api_base_url = ' + connection.escape(apisjson_url) + ' AND common = 1';
+            connection.query(sql3, function (error3, results3, fields3) {
+        
+              //if(results3 && results3.length > 0){      
+                            
+                publish_api.common = results3;            
+
+                var path = '/repos/api-search/web-site/contents/_posts/2023-09-01-' + slug + '.md';
+                const options = {
+                    hostname: 'api.github.com',
+                    method: 'GET',
+                    path: path,
+                    headers: {
+                      "Accept": "application/vnd.github+json",
+                      "User-Agent": "apis-io-search",
+                      "Authorization": 'Bearer ' + process.env.gtoken
+                  }
+                };
+
+                https.get(options, (res) => {
+
+                    var body = '';
+                    res.on('data', (chunk) => {
+                        body += chunk;
+                    });
+
+                    res.on('end', () => {
+
+                      var github_results = JSON.parse(body);
+
+                      var sha = '';
+                      if(github_results.sha){
+                        sha = github_results.sha;
+                      }
+
+                      var api_yaml = yaml.dump(publish_api);
+
+                      var c = {};
+                      c.name = "Kin Lane";
+                      c.email = "kinlane@gmail.com";
+
+                      var m = {};
+                      m.message = 'Publishing OpenAPI';
+                      m.committer = c;
+                      m.sha = sha;
+                      m.content = btoa(unescape(encodeURIComponent(api_yaml)));
+
+                      // Check from github
+                      var path = '/repos/api-search/web-site/contents/_posts/2023-09-01-' + slug + '.md';           
+                      const options = {
+                          hostname: 'api.github.com',
+                          method: 'PUT',
+                          path: path,
+                          headers: {
+                            "Accept": "application/vnd.github+json",
+                            "User-Agent": "apis-io-search",
+                            "Authorization": 'Bearer ' + process.env.gtoken
+                        }
+                      };
+
+                      //console.log(options);
+
+                      var req = https.request(options, (res) => {
+
+                          let body = '';
+                          res.on('data', (chunk) => {
+                              body += chunk;
+                          });
+              
+                          res.on('end', () => {
+
+                            var sql = "UPDATE apis SET published = " + weekNumber + " WHERE baseURL = '" + connection.escape(apis_base_url) + "'";
+                            //var sql = "UPDATE apis SET published = 0 WHERE baseURL = '" + apis_base_url + "'";
+                            connection.query(sql, function (error, results, fields) { 
+                              var response = {};
+                              //response.sql = sql;
+                              //response.body = body;
+                              response.message = "Published  " + slug + " to GitHub!!";
+                              callback( null, response);
+                              connection.end();
+                            });                         
+
+                          });
+
+                          res.on('error', () => {
+
+                            var response = {};
+                            response['pulling'] = "Error writing to GitHub.";            
+                            callback( null, response );  
+                            connection.end();
+
+                          });
+
+                      });
+
+                    req.write(JSON.stringify(m));
+                    req.end();   
+
+                    });              
+
+                    res.on('error', () => {
+
+                      var response = {};
+                      response['pulling'] = "Error reading from GitHub.";            
+                      callback( null, response );  
+                      connection.end();
+                    });
+
+                });   
+
+              //}
+
+            });  // End Common                
+          
+          //}
+
+        });  // End Properties                         
   
       }
       else{
