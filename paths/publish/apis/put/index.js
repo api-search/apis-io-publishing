@@ -60,31 +60,15 @@ exports.handler = vandium.generic()
         publish_api.rules = apis_rules;        
 
         var sql2 = 'select p.type,p.url FROM properties p WHERE p.api_base_url = ' + connection.escape(apis_base_url) + ' AND common = 0';
-        connection.query(sql2, function (error2, results2, fields2) {
-    
-          if(results2 && results2.length > 0){      
-                        
-            publish_api.properties = results2;
-
-            var sql3 = 'select p.type,p.url FROM properties p WHERE p.api_base_url = ' + connection.escape(apisjson_url) + ' AND common = 1';
-            connection.query(sql3, function (error3, results3, fields3) {
-        
-              if(results3 && results3.length > 0){      
-                            
-                publish_api.common = results3;            
-
-                var response = {};
-                response['pulling'] = "No more to publish.";            
-                callback( null, results3 );  
-                connection.end();         
-
-              }
-
-            });  // End Common                
+            var sql3 = 'select p.type,p.url FROM properties p WHERE p.api_base_url = ' + connection.escape(apisjson_url) + ' AND common = 1';              
           
-          }
+            var response = {};
+            response.message = "derbug";            
+            response.sql2 = sql2;
+            response.sql3 = sql3;
 
-        });  // End Properties                         
+            callback( null, response );  
+            connection.end();                        
   
       }
       else{
