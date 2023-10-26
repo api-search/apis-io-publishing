@@ -126,43 +126,8 @@ exports.handler = vandium.generic()
                         }
                       };
 
-                      //console.log(options);
-
-                      var req = https.request(options, (res) => {
-
-                          let body = '';
-                          res.on('data', (chunk) => {
-                              body += chunk;
-                          });
-              
-                          res.on('end', () => {
-
-                            var sql = "UPDATE apis SET published = " + weekNumber + " WHERE baseURL = '" + apis_base_url + "'";
-                            //var sql = "UPDATE apis SET published = 0 WHERE baseURL = '" + apis_base_url + "'";
-                            connection.query(sql, function (error, results, fields) { 
-                              var response = {};
-                              //response.sql = sql;
-                              //response.body = body;
-                              response.message = "Published  " + slug + " to GitHub!!";
-                              callback( null, response);
-                              connection.end();
-                            });                         
-
-                          });
-
-                          res.on('error', () => {
-
-                            var response = {};
-                            response['pulling'] = "Error writing to GitHub.";            
-                            callback( null, response );  
-                            connection.end();
-
-                          });
-
-                      });
-
-                    req.write(JSON.stringify(m));
-                    req.end();   
+                    console.log(options);
+ 
 
                     });              
 
