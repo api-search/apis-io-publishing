@@ -137,7 +137,7 @@ exports.handler = vandium.generic()
               
                           res.on('end', () => {
 
-                            var sql = "UPDATE apis SET published = " + weekNumber + " WHERE baseURL = " + connection.escape(apis_base_url);
+                            var sql = "UPDATE apis SET published = " + weekNumber + " WHERE humanURL = " + connection.escape(apis_human_url);
                             //var sql = "UPDATE apis SET published = 0 WHERE baseURL = '" + apis_base_url + "'";
                             connection.query(sql, function (error, results, fields) { 
                               var response = {};
