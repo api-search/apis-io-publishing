@@ -143,7 +143,7 @@ exports.handler = vandium.generic()
                               var response = {};
                               //response.sql = sql;
                               //response.body = body;
-                              response.message = "Published  " + apis_slug + " to GitHub!!";
+                              response.message = "Published " + apis_slug + " to GitHub!!";
                               callback( null, response);
                               connection.end();
                             });                         
