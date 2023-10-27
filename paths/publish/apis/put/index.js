@@ -73,7 +73,7 @@ exports.handler = vandium.generic()
                             
                 publish_api.common = results3;            
 
-                var path = '/repos/api-search/web-site/contents/_posts/2023-09-01-' + slug + '.md';
+                var path = '/repos/api-search/web-site/contents/_posts/2023-09-01-' + apis_slug + '.md';
                 const options = {
                     hostname: 'api.github.com',
                     method: 'GET',
@@ -114,7 +114,7 @@ exports.handler = vandium.generic()
                       m.content = btoa(unescape(encodeURIComponent(api_yaml)));
 
                       // Check from github
-                      var path = '/repos/api-search/web-site/contents/_posts/2023-09-01-' + slug + '.md';           
+                      var path = '/repos/api-search/web-site/contents/_posts/2023-09-01-' + apis_slug + '.md';           
                       const options = {
                           hostname: 'api.github.com',
                           method: 'PUT',
@@ -143,7 +143,7 @@ exports.handler = vandium.generic()
                               var response = {};
                               //response.sql = sql;
                               //response.body = body;
-                              response.message = "Published  " + slug + " to GitHub!!";
+                              response.message = "Published  " + apis_slug + " to GitHub!!";
                               callback( null, response);
                               connection.end();
                             });                         
