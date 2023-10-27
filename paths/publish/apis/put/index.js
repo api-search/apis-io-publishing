@@ -101,7 +101,7 @@ exports.handler = vandium.generic()
                         sha = github_results.sha;
                       }
 
-                      var api_yaml = yaml.dump(publish_api);
+                      var api_yaml = '---\r\n' + yaml.dump(publish_api) + '---';
 
                       var c = {};
                       c.name = "Kin Lane";
