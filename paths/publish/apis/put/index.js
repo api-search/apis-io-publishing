@@ -52,6 +52,7 @@ exports.handler = vandium.generic()
         publish_api.image = apis_image;
         publish_api.tags = apis_tags.split(',');
       
+        publish_api.url = apisjson_url;
         publish_api.humanURL = apis_human_url;
         publish_api.baseURL = apis_base_url;
 
