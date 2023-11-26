@@ -4,7 +4,7 @@ info:
   description: This is API that publishes APIs to the web site.
   version: V1
 servers:
-- url: https://6lmdrlqfjj.execute-api.us-east-1.amazonaws.com/staging
+- url: https://publishing-api.apis.io
 paths:
 
   /publish/apis:
