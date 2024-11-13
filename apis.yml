@@ -7,6 +7,8 @@ created: '2024-08-20'
 modified: '2024-11-13'  
 url: https://github.com/api-search/publishing-api/blob/main/apis.yml
 type: Contract
+position: Producer
+access: 1st-Party
 image: https://kinlane-productions2.s3.amazonaws.com/apis-io/apis-io-api-logo.jpg
 tags:
 
