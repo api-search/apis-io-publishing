@@ -1,4 +1,4 @@
-aid: apis-io
+aid: apis-io-publishing
 specificationVersion: '0.18'
 name: APIs.io Publishing API
 description: >-
@@ -14,7 +14,7 @@ tags:
 
 apis:
 
-  - aid: apis-io:publishing-api
+  - aid: apis-io-publishing:publishing-api
     name: APIs.io Publishing API
     description: >-
       This is the API for powering APIs.io.
