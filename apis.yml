@@ -40,7 +40,7 @@ apis:
         type: GitHubActions
       - url: https://developer.apis.io/documentation/
         type: Documentation
-      - url: https://github.com/api-search/publishing-api/blob/main/publishing/openapi.yml
+      - url: properties/openapi.yml
         type: OpenAPI
 
 common:
