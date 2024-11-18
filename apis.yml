@@ -2,37 +2,29 @@ aid: apis-io-publishing
 specificationVersion: '0.18'
 name: APIs.io Publishing API
 description: >-
-  This is the contract for the APIs.io Publishing API used to govern the APIs.io search publishing.
+  This is the contract for the APIs.io Publishing API used to govern the APIs.io
+  search publishing.
 created: '2024-08-20'
-modified: '2024-11-13'  
+modified: '2024-11-13'
 url: https://github.com/api-search/publishing-api/blob/main/apis.yml
 type: Contract
 position: Producer
 access: 1st-Party
 image: https://kinlane-productions2.s3.amazonaws.com/apis-io/apis-io-api-logo.jpg
 tags:
-
   - Publishing
-
 apis:
-
   - aid: apis-io-publishing:publishing-api
     name: APIs.io Publishing API
-    description: >-
-      This is the API for powering APIs.io.
     tags:
-
       - Publishing
-
     image: https://kinlane-productions2.s3.amazonaws.com/apis-io/apis-io-api-logo.jpg
-    humanURL: https://developer.apis.io/documentation
     baseURL: https://publishing-api.apis.io
-
     contact:
       - FN: APIs.io
         email: info@apis.io
-    
-    publishing:
+    humanURL: https://developer.apis.io/documentation
+    properties:
       - url: https://github.com/api-search/publishing-api
         type: GitHubRepository
       - url: >-
@@ -42,12 +34,12 @@ apis:
         type: Documentation
       - url: properties/openapi.yml
         type: OpenAPI
-
+    description: This is the API for powering APIs.io.
 common:
-
   - url: https://github.com/api-search/
     type: GitHubOrganization
-  - url: https://www.postman.com/api-evangelist/apis-io-api-search-publishing/overview
+  - url: >-
+      https://www.postman.com/api-evangelist/apis-io-api-search-publishing/overview
     type: PostmanPublicWorkspace
   - url: https://developer.apis.io
     type: Portals
@@ -107,9 +99,9 @@ common:
   - url: >-
       https://api-evangelist-tools.github.io/apis-io-publishing-api-operational-validator/
     type: OperationalValidation
-  - url: https://api-evangelist-tools.github.io/apis-io-publishing-api-api-validator/
+  - url: >-
+      https://api-evangelist-tools.github.io/apis-io-publishing-api-api-validator/
     type: APIValidation
-
 publishings:
   - FN: Kin Lane
     email: info@apievangelist.com
