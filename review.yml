@@ -1,4 +1,4 @@
-executed: '2024-11-18T01:22:23.067Z'
+executed: '2024-11-27T00:02:35.676Z'
 results:
   - code: apis-json-specification-aid-info
     message: There is an aid.
@@ -181,6 +181,118 @@ results:
       end:
         line: 12
         character: 53
+  - code: apis-json-apis-properties-url-info
+    message: Property URLs Are Valid
+    path:
+      - apis
+      - '0'
+      - properties
+      - '0'
+      - url
+    severity: 2
+    range:
+      start:
+        line: 14
+        character: 13
+      end:
+        line: 14
+        character: 57
+  - code: apis-json-apis-properties-github-repository-info
+    message: Has a GitHub Repository
+    path:
+      - apis
+      - '0'
+      - properties
+      - '0'
+      - type
+    severity: 2
+    range:
+      start:
+        line: 15
+        character: 14
+      end:
+        line: 15
+        character: 30
+  - code: apis-json-apis-properties-url-info
+    message: Property URLs Are Valid
+    path:
+      - apis
+      - '0'
+      - properties
+      - '1'
+      - url
+    severity: 2
+    range:
+      start:
+        line: 16
+        character: 13
+      end:
+        line: 17
+        character: 95
+  - code: apis-json-apis-properties-github-action-info
+    message: Has a GitHub Action
+    path:
+      - apis
+      - '0'
+      - properties
+      - '1'
+      - type
+    severity: 2
+    range:
+      start:
+        line: 18
+        character: 14
+      end:
+        line: 18
+        character: 27
+  - code: apis-json-apis-properties-url-info
+    message: Property URLs Are Valid
+    path:
+      - apis
+      - '0'
+      - properties
+      - '2'
+      - url
+    severity: 2
+    range:
+      start:
+        line: 19
+        character: 13
+      end:
+        line: 19
+        character: 53
+  - code: apis-json-apis-properties-documentation-info
+    message: Has Documentation
+    path:
+      - apis
+      - '0'
+      - properties
+      - '2'
+      - type
+    severity: 2
+    range:
+      start:
+        line: 20
+        character: 14
+      end:
+        line: 20
+        character: 27
+  - code: apis-json-apis-properties-openapi-info
+    message: Has An OpenAPI
+    path:
+      - apis
+      - '0'
+      - properties
+      - '3'
+      - type
+    severity: 2
+    range:
+      start:
+        line: 22
+        character: 14
+      end:
+        line: 22
+        character: 21
   - code: apis-json-apis-description-info
     message: Has a Description
     path:
