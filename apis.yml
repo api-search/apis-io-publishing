@@ -1,18 +1,5 @@
 aid: apis-io-publishing
-specificationVersion: '0.18'
-name: APIs.io Publishing API
-description: >-
-  This is the contract for the APIs.io Publishing API used to govern the APIs.io
-  search publishing.
-created: '2024-08-20'
-modified: '2024-11-13'
 url: https://github.com/api-search/publishing-api/blob/main/apis.yml
-type: Contract
-position: Producer
-access: 1st-Party
-image: https://kinlane-productions2.s3.amazonaws.com/apis-io/apis-io-api-logo.jpg
-tags:
-  - Publishing
 apis:
   - aid: apis-io-publishing:publishing-api
     name: APIs.io Publishing API
@@ -35,6 +22,12 @@ apis:
       - url: properties/openapi.yml
         type: OpenAPI
     description: This is the API for powering APIs.io.
+name: APIs.io Publishing API
+tags:
+  - Publishing
+type: Contract
+image: https://kinlane-productions2.s3.amazonaws.com/apis-io/apis-io-api-logo.jpg
+access: 1st-Party
 common:
   - url: https://github.com/api-search/
     type: GitHubOrganization
@@ -102,7 +95,14 @@ common:
   - url: >-
       https://api-evangelist-tools.github.io/apis-io-publishing-api-api-validator/
     type: APIValidation
+created: '2024-08-20'
+modified: '2024-11-26'
+position: Producing
+description: >-
+  This is the contract for the APIs.io Publishing API used to govern the APIs.io
+  search publishing.
 publishings:
   - FN: Kin Lane
     email: info@apievangelist.com
     X-github: kinlane
+specificationVersion: '0.18'
